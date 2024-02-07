@@ -1,0 +1,28 @@
+{
+  "name": "solid",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "tsx watch src/server.ts",
+    "start": "node build/server.js",
+    "build": "tsup src -d build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rocketseat/eslint-config": "2.1.0",
+    "@types/node": "20.11.16",
+    "eslint": "8.56.0",
+    "tsup": "8.0.1",
+    "tsx": "4.7.0",
+    "typescript": "5.3.3"
+  },
+  "dependencies": {
+    "dotenv": "16.4.1",
+    "fastify": "4.26.0",
+    "zod": "3.22.4"
+  }
+}
