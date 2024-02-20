@@ -1,0 +1,7 @@
+Repositories => Ficam agregadas as funções com os bancos de dados. Ex: Criação, busca, buscaPorEmail, atualização.
+Use-case => Onde ficam as regras de negócio e onde é instanciado o respositório.
+Controllers => Literalmente controlam os UseCases. Fazendo com o que executem e retornem como for necessário, inclusive tratando erros.
+
+* Como se trata de typescript, as interfaces são utilizadas. Isso ajuda muito a deixar o código independente de banco de dados.
+* Os arquivos ".spec" são utilizados para test. O plugin vitest automaticamente consegue enxergar que esse arquivo deve ser testado.
+
