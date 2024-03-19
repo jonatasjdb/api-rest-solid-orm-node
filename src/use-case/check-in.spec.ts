@@ -19,8 +19,8 @@ describe('CheckIn Use Case', () => {
       title: 'JavaScript Gym',
       description: '',
       phone: '',
-      latitude: new Decimal(0),
-      longitude: new Decimal(0),
+      latitude: new Decimal(-19.8838754),
+      longitude: new Decimal(-43.99104),
     })
 
     vi.useFakeTimers()
@@ -34,8 +34,8 @@ describe('CheckIn Use Case', () => {
     const { checkIn } = await checkInUseCase.execute({
       gymId: 'gym-01',
       userId: 'gym-01',
-      userLatitude: 0,
-      userLongitude: 0,
+      userLatitude: -19.8838754,
+      userLongitude: -43.99104,
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
@@ -47,16 +47,16 @@ describe('CheckIn Use Case', () => {
     await checkInUseCase.execute({
       gymId: 'gym-01',
       userId: 'gym-01',
-      userLatitude: 0,
-      userLongitude: 0,
+      userLatitude: -19.8838754,
+      userLongitude: -43.99104,
     })
 
     await expect(() =>
       checkInUseCase.execute({
         gymId: 'gym-01',
         userId: 'gym-01',
-        userLatitude: 0,
-        userLongitude: 0,
+        userLatitude: -19.8838754,
+        userLongitude: -43.99104,
       }),
     ).rejects.toBeInstanceOf(Error)
   })
@@ -67,8 +67,8 @@ describe('CheckIn Use Case', () => {
     await checkInUseCase.execute({
       gymId: 'gym-01',
       userId: 'gym-01',
-      userLatitude: 0,
-      userLongitude: 0,
+      userLatitude: -19.8838754,
+      userLongitude: -43.99104,
     })
 
     vi.setSystemTime(new Date(2022, 0, 21, 8, 0, 0))
@@ -76,21 +76,21 @@ describe('CheckIn Use Case', () => {
     const { checkIn } = await checkInUseCase.execute({
       gymId: 'gym-01',
       userId: 'gym-01',
-      userLatitude: 0,
-      userLongitude: 0,
+      userLatitude: -19.8838754,
+      userLongitude: -43.99104,
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
   })
 
   it('should not be able to check in on distant gym', async () => {
-    const { checkIn } = await checkInUseCase.execute({
-      gymId: 'gym-01',
-      userId: 'gym-01',
-      userLatitude: 0,
-      userLongitude: 0,
-    })
-
-    expect(checkIn.id).toEqual(expect.any(String))
+    await expect(() =>
+      checkInUseCase.execute({
+        gymId: 'gym-02',
+        userId: 'user-01',
+        userLatitude: -19.8637509,
+        userLongitude: -43.9818056,
+      }),
+    ).rejects.toBeInstanceOf(Error)
   })
 })
