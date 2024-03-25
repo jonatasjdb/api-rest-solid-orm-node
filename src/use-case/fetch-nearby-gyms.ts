@@ -2,8 +2,8 @@ import { GymsRepository } from '@/repositories/gyms-respository'
 import { Gym } from '@prisma/client'
 
 interface FetchNearbyGymsUseCaseRequest {
-  userLatitude: string
-  userLongitude: string
+  userLatitude: number
+  userLongitude: number
 }
 
 interface FetchNearbyGymsUseCaseResponse {
