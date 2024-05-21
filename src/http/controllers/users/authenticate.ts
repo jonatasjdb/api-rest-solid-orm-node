@@ -39,6 +39,4 @@ export async function authenticate(
 
     return reply.status(500).send()
   }
-
-  return reply.status(200).send()
 }
