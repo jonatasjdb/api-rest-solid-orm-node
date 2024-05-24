@@ -1,9 +1,7 @@
-import { UserAlreadyExistsError } from '@/use-case/errors/user-already-exists-error'
+import { InvalidCredentialsError } from '@/use-case/errors/invalid-credentials-error'
 import { makeAuthenticateUseCase } from '@/use-case/factories/make-authenticate-use-case'
-import fastify, { FastifyReply, FastifyRequest } from 'fastify'
+import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
-
-export const app = fastify()
 
 export async function authenticate(
   request: FastifyRequest,
@@ -19,24 +17,49 @@ export async function authenticate(
   try {
     const authenticateUseCase = makeAuthenticateUseCase()
 
-    const {user} = await authenticateUseCase.execute({
+    const { user } = await authenticateUseCase.execute({
       email,
       password,
     })
 
-    const token = await reply.jwtSign({}, {
-      sign: {
-        sub: user.id
-      }
-    })
+    const token = await reply.jwtSign(
+      {
+        role: user.role,
+      },
+      {
+        sign: {
+          sub: user.id,
+        },
+      },
+    )
+    const refreshToken = await reply.jwtSign(
+      {
+        role: user.role,
+      },
+      {
+        sign: {
+          sub: user.id,
+          expiresIn: '7d',
+        },
+      },
+    )
 
-    return reply.status(200).send({ token })
-
+    return reply
+      .setCookie('refreshToken', refreshToken, {
+        path: '/',
+        secure: true,
+        sameSite: true,
+        httpOnly: true,
+      })
+      .status(200)
+      .send({
+        token,
+      })
   } catch (err) {
-    if (err instanceof UserAlreadyExistsError) {
+    if (err instanceof InvalidCredentialsError) {
       return reply.status(400).send({ message: err.message })
     }
 
-    return reply.status(500).send()
+    throw err
   }
 }
